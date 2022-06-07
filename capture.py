@@ -18,7 +18,7 @@ except:
     print ('Calibration data does not exist')
 
 def capture(outDir, fileName, mtx, dist):
-    subprocess.run(['libcamera-still', '--denoise off', '--raw', '--shutter 70000', '--gain 0', '--awb cloudy', '--immediate', '--rawfull', '-e', 'png', '-o', f'{outDir}/{fileName}'])
+    subprocess.run(['libcamera-still', '--denoise', 'off', '--raw', '--shutter', '70000', '--gain', '0', '--awb', 'cloudy', '--immediate', '--rawfull', '-e', 'png', '-o', f'{outDir}/{fileName}'])
     try:
         img = cv.imread(f'{outDir}/{fileName}')
         # Undistort image with camera calibration data

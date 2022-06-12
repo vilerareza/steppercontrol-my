@@ -1,5 +1,3 @@
-#import argparse
-import os
 import cv2 as cv
 import numpy as np
 import pickle
@@ -11,7 +9,8 @@ outDir = "img_corrected"
 
 # Loading calibration data
 try:
-    camera_cal = pickle.load(open('../camera_cal.p',"rb"))
+    #camera_cal = pickle.load(open('../camera_cal.p',"rb"))
+    camera_cal = pickle.load(open('cal_data.p',"rb"))
     mtx = camera_cal["mtx"]
     dist = camera_cal["dist"]
 except:

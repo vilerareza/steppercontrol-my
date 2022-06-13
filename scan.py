@@ -9,7 +9,7 @@ import RPi.GPIO as gpio
 # Argument handler
 parser = argparse.ArgumentParser()
 parser.add_argument('pattern', type = str)
-#parser.add_argument('filename', type = str)
+parser.add_argument('filename', type = str)
 jsonDecoder = json.JSONDecoder()
 # Unpack
 args = parser.parse_args()

@@ -21,7 +21,8 @@ pattern = json.loads(argPattern)    # example: [{'dir':'f', 'steps': 1, 'mode':1
 
 rawDir = "img_raw"
 outDir = "img_corrected"
-unDistorter = Undistorter(calFile='cal_data.p')
+#unDistorter = Undistorter(calFile='cal_data.p')
+unDistorter = Undistorter(calFile='camera_cal.p')
 stepperMotor = StepperMotor()
 LED = 14
 

@@ -4,6 +4,7 @@ import subprocess
 import cv2 as cv
 import argparse
 import json
+import RPi.GPIO as gpio
 
 # Argument handler
 parser = argparse.ArgumentParser()
@@ -22,6 +23,13 @@ rawDir = "img_raw"
 outDir = "img_corrected"
 unDistorter = Undistorter(calFile='cal_data.p')
 stepperMotor = StepperMotor()
+LED = 14
+
+def led_init(pin):
+    # Initializes GPIOs
+    gpio.setwarnings(False)
+    gpio.setmode(gpio.BCM)
+    gpio.setup(pin, gpio.OUT)
 
 def capture(rawDir, fileName):
     # Capture
@@ -32,9 +40,19 @@ def capture(rawDir, fileName):
     except:
         print ('Image not found')
 
+def led_on(pin):
+    gpio.output(pin, gpio.HIGH)
+
+def led_off(pin):
+    gpio.output(pin, gpio.LOW)
+
+led_init(LED)
+led_on(LED)
+
 for i in range(len(pattern)):
     stepperMotor.move(dir = pattern[i]['dir'], steps = pattern[i]['steps'], mode = pattern[i]['mode'], delay=pattern[i]['delay'])
     img = capture(rawDir, 'temp.png')
     img_cor = unDistorter.undistort(img)
     cv.imwrite(f'{outDir}/{i}.png', img_cor)
     
+led_off(LED)

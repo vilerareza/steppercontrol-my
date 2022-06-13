@@ -93,41 +93,41 @@ class StepperMotor(object):
         sleep(0.2)
         gpio.output(self.STBY, gpio.HIGH)
 
-def move(self, dir = 'f', steps = 1, mode = 1, delay=0.05):
-    if dir == 'f':
-        try:
-            # Move forward
-            print (f'Move forward {steps} step(s) with mode 1 / {mode}')
-            self.set_mode(mode)
-            gpio.output(self.DIR, self.DIR_CW)
-            for x in range(steps):
-                if True:    # Check the condition of end position switch later
-                    gpio.output(self.STEP, gpio.HIGH)
-                    sleep(delay)
-                    gpio.output(self.STEP, gpio.LOW)
-                    sleep (delay)
-        except Exception as e:
-            print (e)
-        finally:
-            self.stop()
+    def move(self, dir = 'f', steps = 1, mode = 1, delay=0.05):
+        if dir == 'f':
+            try:
+                # Move forward
+                print (f'Move forward {steps} step(s) with mode 1 / {mode}')
+                self.set_mode(mode)
+                gpio.output(self.DIR, self.DIR_CW)
+                for x in range(steps):
+                    if True:    # Check the condition of end position switch later
+                        gpio.output(self.STEP, gpio.HIGH)
+                        sleep(delay)
+                        gpio.output(self.STEP, gpio.LOW)
+                        sleep (delay)
+            except Exception as e:
+                print (e)
+            finally:
+                self.stop()
 
-    elif dir == 'r':
-        try:
-            # Move reverse
-            print (f'Move backward {steps} step(s) with mode 1 / {mode}')
-            self.set_mode(mode)
-            gpio.output(self.DIR, self.DIR_CCW)
-            #for x in range(SPR*DEC_RATIO*steps*mode):
-            for x in range(steps):
-                if True:    # Check the condition of end position switch later
-                    gpio.output(self.STEP, gpio.HIGH)
-                    sleep(delay)
-                    gpio.output(self.STEP, gpio.LOW)
-                    sleep (delay)
-        except Exception as e:
-            print (e)
-        finally:
-            self.stop()
+        elif dir == 'r':
+            try:
+                # Move reverse
+                print (f'Move backward {steps} step(s) with mode 1 / {mode}')
+                self.set_mode(mode)
+                gpio.output(self.DIR, self.DIR_CCW)
+                #for x in range(SPR*DEC_RATIO*steps*mode):
+                for x in range(steps):
+                    if True:    # Check the condition of end position switch later
+                        gpio.output(self.STEP, gpio.HIGH)
+                        sleep(delay)
+                        gpio.output(self.STEP, gpio.LOW)
+                        sleep (delay)
+            except Exception as e:
+                print (e)
+            finally:
+                self.stop()
 
-    else:
-        print ('Direction is not valid')
+        else:
+            print ('Direction is not valid')

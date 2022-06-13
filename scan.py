@@ -30,6 +30,7 @@ def led_init(pin):
     gpio.setwarnings(False)
     gpio.setmode(gpio.BCM)
     gpio.setup(pin, gpio.OUT)
+    gpio.output(pin, gpio.LOW)
 
 def capture(rawDir, fileName):
     # Capture

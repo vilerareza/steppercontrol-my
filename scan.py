@@ -45,20 +45,20 @@ def led_on(pin):
 def led_off(pin):
     gpio.output(pin, gpio.LOW)
 
-def capture(rawDir, fileName, condition):
+def capture(rawDir, rawFile, outFile, condition):
     # Capture
     subprocess.run(['libcamera-still', '--denoise', 'off', '--shutter', '70000', '--gain', '0', '--awb', 'cloudy', '--immediate', '--rawfull', '-e', 'png', '-o', f'{rawDir}/{fileName}'])
     try:
-        img = cv.imread(f'{rawDir}/{fileName}')
+        img = cv.imread(f'{rawDir}/{rawFile}')
         img_cor = unDistorter.undistort(img)
+        cv.imwrite(f'{outDir}/{outFile}.png', img)
         with condition:
             condition.notify_all()
-            return img_cor
     except:
         print ('Raw image to undistort not found')
 
-def start_capture_thread(rawDir, fileName, condition):
-    t_capture = Thread(target = capture, args = (rawDir, fileName, condition))
+def start_capture_thread(rawDir, rawFile, outFile, condition):
+    t_capture = Thread(target = capture, args = (rawDir, rawFile, outFile, condition))
     t_capture.start()
 
 # Illumination on
@@ -72,10 +72,9 @@ for i in range(len(pattern)):
         with condition:
             # wait until the last capture is completed
             condition.wait()
-    img = start_capture_thread(rawDir, 'temp.png', condition)
+    img = start_capture_thread(rawDir, 'temp.png', str(i) , condition)
     # Stop for capturing
     time.sleep(rest_time)
     print ('Movement stop, capturing...')
-    cv.imwrite(f'{outDir}/{i}.png', img)
 # Illumination off
 led_off(LED)

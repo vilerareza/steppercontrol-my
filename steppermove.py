@@ -48,8 +48,8 @@ else:
 if args.reset:
     print ('Reset position')
 # Delay
-if delay <0.01:
-    delay = 0.01
+# if delay <0.01:
+#     delay = 0.01
 
 def reset():
     gpio.output(STBY, gpio.LOW)

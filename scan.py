@@ -72,7 +72,7 @@ for i in range(len(pattern)):
         with condition:
             # wait until the last capture is completed
             condition.wait()
-    img = start_capture_thread(rawDir, 'temp.png', str(i) , condition)
+    start_capture_thread(rawDir, 'temp.png', str(i) , condition)
     # Stop for capturing
     time.sleep(rest_time)
     print ('Movement stop, capturing...')

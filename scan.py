@@ -4,6 +4,9 @@ import subprocess
 import cv2 as cv
 import argparse
 import json
+from threading import Condition, Thread
+import time
+
 import RPi.GPIO as gpio
 
 # Argument handler
@@ -25,6 +28,9 @@ outDir = "img_corrected"
 unDistorter = Undistorter(calFile='camera_cal.p')
 stepperMotor = StepperMotor()
 LED = 14
+rest_time = 2   # Stepper motor rest time (s) when camera is capturing.
+t_capture = Thread()
+condition = Condition()
 
 def led_init(pin):
     # Initializes GPIOs
@@ -33,28 +39,43 @@ def led_init(pin):
     gpio.setup(pin, gpio.OUT)
     gpio.output(pin, gpio.LOW)
 
-def capture(rawDir, fileName):
-    # Capture
-    subprocess.run(['libcamera-still', '--denoise', 'off', '--shutter', '70000', '--gain', '0', '--awb', 'cloudy', '--immediate', '--rawfull', '-e', 'png', '-o', f'{rawDir}/{fileName}'])
-    try:
-        img = cv.imread(f'{rawDir}/{fileName}')
-        return img
-    except:
-        print ('Image not found')
-
 def led_on(pin):
     gpio.output(pin, gpio.HIGH)
 
 def led_off(pin):
     gpio.output(pin, gpio.LOW)
 
+def capture(rawDir, fileName, condition):
+    # Capture
+    subprocess.run(['libcamera-still', '--denoise', 'off', '--shutter', '70000', '--gain', '0', '--awb', 'cloudy', '--immediate', '--rawfull', '-e', 'png', '-o', f'{rawDir}/{fileName}'])
+    try:
+        img = cv.imread(f'{rawDir}/{fileName}')
+        img_cor = unDistorter.undistort(img)
+        with condition:
+            condition.notify_all()
+            return img_cor
+    except:
+        print ('Raw image to undistort not found')
+
+def start_capture_thread(self, rawDir, fileName, condition):
+    t_capture = Thread(target = capture, args = (rawDir, fileName, condition))
+    t_capture.start()
+
+# Illumination on
 led_init(LED)
 led_on(LED)
-
+# Start pattern
 for i in range(len(pattern)):
     stepperMotor.move(dir = pattern[i]['dir'], steps = pattern[i]['steps'], mode = pattern[i]['mode'], delay=pattern[i]['delay'])
-    img = capture(rawDir, 'temp.png')
-    img_cor = unDistorter.undistort(img)
-    cv.imwrite(f'{outDir}/{i}.png', img_cor)
-    
+    if i > 0:
+        # No need to wait for first move
+        with condition:
+            # wait until the last capture is completed
+            condition.wait()
+    img = start_capture_thread(rawDir, 'temp.png', condition)
+    # Stop for capturing
+    time.sleep(rest_time)
+    print ('Movement stop, capturing...')
+    cv.imwrite(f'{outDir}/{i}.png', img)
+# Illumination off
 led_off(LED)

@@ -47,7 +47,7 @@ def led_off(pin):
 
 def capture(rawDir, rawFile, outFile, condition):
     # Capture
-    subprocess.run(['libcamera-still', '--denoise', 'off', '--shutter', '70000', '--gain', '0', '--awb', 'cloudy', '--immediate', '--rawfull', '-e', 'png', '-o', f'{rawDir}/{fileName}'])
+    subprocess.run(['libcamera-still', '--denoise', 'off', '--shutter', '70000', '--gain', '0', '--awb', 'cloudy', '--immediate', '--rawfull', '-e', 'png', '-o', f'{rawDir}/{rawFile}'])
     try:
         img = cv.imread(f'{rawDir}/{rawFile}')
         img_cor = unDistorter.undistort(img)

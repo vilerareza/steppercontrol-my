@@ -8,8 +8,6 @@ fileName = 'capture_undistorted.png'
 imgDir = "img_raw"
 outDir = "img_corrected"
 
-# Loading calibration data
-
 def capture(outDir, fileName, mtx, dist):
     subprocess.run(['libcamera-still', '--denoise', 'off', '--shutter', '70000', '--gain', '0', '--awb', 'cloudy', '--immediate', '--rawfull', '-e', 'png', '-o', f'{outDir}/{fileName}'])
     try:
@@ -23,6 +21,7 @@ def capture(outDir, fileName, mtx, dist):
 
 t1 = time.time()
 try:
+    # Loading calibration data
     camera_cal = pickle.load(open('../camera_cal.p',"rb"))
     #camera_cal = pickle.load(open('cal_data.p',"rb"))
     mtx = camera_cal["mtx"]

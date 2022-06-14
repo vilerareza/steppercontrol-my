@@ -29,7 +29,7 @@ unDistorter = Undistorter(calFile='camera_cal.p')
 stepperMotor = StepperMotor()
 LED = 14
 rest_time = 2   # Stepper motor rest time (s) when camera is capturing.
-capture_timeout = 15
+capture_timeout = 25
 t_capture = Thread()
 condition = Condition()
 

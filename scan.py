@@ -57,7 +57,7 @@ def capture(rawDir, fileName, condition):
     except:
         print ('Raw image to undistort not found')
 
-def start_capture_thread(self, rawDir, fileName, condition):
+def start_capture_thread(rawDir, fileName, condition):
     t_capture = Thread(target = capture, args = (rawDir, fileName, condition))
     t_capture.start()
 

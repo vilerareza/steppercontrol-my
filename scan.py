@@ -51,7 +51,7 @@ def capture(rawDir, rawFile, outFile, condition):
     try:
         img = cv.imread(f'{rawDir}/{rawFile}')
         img_cor = unDistorter.undistort(img)
-        cv.imwrite(f'{outDir}/{outFile}.png', img)
+        cv.imwrite(f'{outDir}/{outFile}.png', img_cor)
         with condition:
             condition.notify_all()
     except:

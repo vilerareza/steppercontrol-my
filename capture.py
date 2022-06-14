@@ -9,7 +9,10 @@ imgDir = "img_raw"
 outDir = "img_corrected"
 
 def capture(outDir, fileName, mtx, dist):
+    t1 = time.time()
     subprocess.run(['libcamera-still', '--denoise', 'off', '--shutter', '70000', '--gain', '0', '--awb', 'cloudy', '--immediate', '--rawfull', '-e', 'png', '-o', f'{outDir}/{fileName}'])
+    t2 = time.time()
+    print (f'Timelapse: {t2-t1}')
     try:
         img = cv.imread(f'{outDir}/{fileName}')
         # Undistort image with camera calibration data
@@ -17,9 +20,6 @@ def capture(outDir, fileName, mtx, dist):
         cv.imwrite(f'{outDir}/{fileName}',undst_image)
     except:
         print ('Image not found')
-
-
-t1 = time.time()
 try:
     # Loading calibration data
     camera_cal = pickle.load(open('../camera_cal.p',"rb"))
@@ -30,5 +30,4 @@ except:
     print ('Calibration data does not exist')
 
 capture(outDir, fileName, mtx, dist)
-t2 = time.time()
-print (f'Timelapse: {t2-t1}')
+

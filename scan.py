@@ -79,7 +79,7 @@ try:
                 # wait until the last capture is completed
                 condition.wait(timeout = capture_timeout)
         start_capture_thread(rawDir, 'temp.png', str(i) , condition)
-        time.sleep(rest_time)
+        time.sleep(rest_time+1)
         print ('Movement stop, capturing...')
     # Illumination off
     with condition:

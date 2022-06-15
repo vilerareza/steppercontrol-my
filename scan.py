@@ -72,7 +72,7 @@ try:
         stepperMotor.move(dir = pattern[i]['dir'], steps = pattern[i]['steps'], mode = pattern[i]['mode'], delay=pattern[i]['delay'])
         # Stop for capturing
         time.sleep(1.5)
-        print ('Movement stop, capturing...')
+        print (f'Movement stop, capturing...{i}')
         if i > 0:
             # No need to wait for first move
             with condition:
@@ -80,7 +80,7 @@ try:
                 condition.wait(timeout = capture_timeout)
         start_capture_thread(rawDir, 'temp.png', str(i) , condition)
         time.sleep(5)
-        print ('Movement stop, capturing...')
+        print (f'Capture complete...{i}')
     # Illumination off
     with condition:
         # wait until the last capture is completed

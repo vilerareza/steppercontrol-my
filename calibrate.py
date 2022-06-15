@@ -41,6 +41,6 @@ if len(imageFiles) > 0:
     camera_cal["mtx"] = mtx
     camera_cal["dist"] = dist
 
-    pickle.dump(camera_cal, open('cal_data.p', 'wb'))
+    pickle.dump(camera_cal, open('camera_cal.p', 'wb'))
 else:
     print ('No checker images found')

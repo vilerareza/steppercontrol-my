@@ -95,16 +95,22 @@ class StepperMotor(object):
         gpio.output(self.STBY, gpio.HIGH)
 
     def home(self, dir = 'f', mode = 1, delay=0.002):
-        print (f'Move to home position...')
-        self.set_mode(mode)
-        gpio.output(self.DIR, self.DIR_CW)
-        while gpio.input(self.END_POS):    # Check the condition of end position
-            gpio.output(self.STEP, gpio.HIGH)
-            sleep(delay)
-            gpio.output(self.STEP, gpio.LOW)
-            sleep (delay)
-        print (f'Home position reached...')
-        return True
+        try:
+            print (f'Move to home position...')
+            self.set_mode(mode)
+            gpio.output(self.DIR, self.DIR_CW)
+            while gpio.input(self.END_POS):    # Check the condition of end position
+                gpio.output(self.STEP, gpio.HIGH)
+                sleep(delay)
+                gpio.output(self.STEP, gpio.LOW)
+                sleep (delay)
+            print (f'Home position reached...')
+            self.stop()
+            return True
+        except Exception as e:
+            print (e)
+            self.stop()
+            return False
 
     def move(self, dir = 'f', steps = 1, mode = 1, delay=0.05):
         if dir == 'f':

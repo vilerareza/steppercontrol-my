@@ -97,6 +97,7 @@ class StepperMotor(object):
     def home(self, dir = 'f', mode = 1, delay=0.002):
         print (f'Move to home position...')
         self.set_mode(mode)
+        gpio.output(self.DIR, self.DIR_CW)
         while gpio.input(self.END_POS):    # Check the condition of end position
             gpio.output(self.STEP, gpio.HIGH)
             sleep(delay)

@@ -87,6 +87,7 @@ class StepperMotor(object):
         gpio.output(self.MODE1, gpio.LOW)
         gpio.output(self.MODE2, gpio.LOW)
         gpio.output(self.STBY, gpio.LOW)
+        print ('Motor stopped')
         
     def reset(self):
         # Reset the driver state

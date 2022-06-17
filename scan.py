@@ -93,10 +93,13 @@ try:
         print (f'Scan complete. Timelapse: {str(t2-t1)}s')
         # Back to home position
         stepperMotor.home()
+        stepperMotor.stop()
 
 except Exception as e:
     print (e)
     led_off(LED)
     # Back to home position
-    stepperMotor.home()
+    # stepperMotor.home()
+    stepperMotor.stop()
+
 

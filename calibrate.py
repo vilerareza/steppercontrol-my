@@ -5,8 +5,8 @@ import pickle
 
 checker_img_folder = 'checker'
 checker_corners = (7,7)
-sq_size = 0.006
-cal_resize_ratio = 10
+sq_size = 0.02
+cal_resize_ratio = 8
 object_points = []
 img_points = []
 
@@ -36,8 +36,7 @@ if len(imageFiles) > 0:
         camera_cal = {}
         camera_cal["mtx"] = mtx
         camera_cal["dist"] = dist
-
-    pickle.dump(camera_cal, open('camera_cal.p', 'wb'))    
+        pickle.dump(camera_cal, open('camera_cal.p', 'wb'))    
     except:
         print ('Calibration failed')
 
